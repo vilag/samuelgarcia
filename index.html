@@ -626,50 +626,6 @@
         padding: 18px 48px 26px;
       }
     }
-
-    /* ---------- FULLSCREEN TOGGLE ---------- */
-    .fs-btn {
-      position: fixed;
-      right: 16px;
-      bottom: 16px;
-      z-index: 50;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 16px;
-      border: none;
-      border-radius: 999px;
-      background: var(--pine-deep);
-      color: var(--paper);
-      font-family: var(--font-body);
-      font-size: 0.8rem;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 10px 24px -10px rgba(14, 51, 84, 0.55);
-    }
-
-    .fs-btn svg {
-      width: 16px;
-      height: 16px;
-      flex: 0 0 auto;
-    }
-
-    .fs-btn:focus-visible {
-      outline: 2px solid var(--clay);
-      outline-offset: 2px;
-    }
-
-    @media (hover:hover) and (pointer:fine) {
-      .fs-btn:hover {
-        filter: brightness(1.1);
-      }
-    }
-
-    @media print {
-      .fs-btn {
-        display: none;
-      }
-    }
   </style>
 </head>
 
@@ -863,74 +819,6 @@
 
     </main>
   </div>
-
-  <button id="fullscreen-toggle" class="fs-btn" type="button" aria-pressed="false">
-    <svg class="fs-icon fs-icon-enter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <path d="M8 3H5a2 2 0 0 0-2 2v3" />
-      <path d="M21 8V5a2 2 0 0 0-2-2h-3" />
-      <path d="M3 16v3a2 2 0 0 0 2 2h3" />
-      <path d="M16 21h3a2 2 0 0 0 2-2v-3" />
-    </svg>
-    <svg class="fs-icon fs-icon-exit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden>
-      <path d="M8 3v3a2 2 0 0 1-2 2H3" />
-      <path d="M21 8h-3a2 2 0 0 1-2-2V3" />
-      <path d="M3 16h3a2 2 0 0 1 2 2v3" />
-      <path d="M16 21v-3a2 2 0 0 1 2-2h3" />
-    </svg>
-    <span class="fs-label">Pantalla completa</span>
-  </button>
-
-  <script>
-    (function () {
-      var btn = document.getElementById('fullscreen-toggle');
-      var iconEnter = btn.querySelector('.fs-icon-enter');
-      var iconExit = btn.querySelector('.fs-icon-exit');
-      var label = btn.querySelector('.fs-label');
-
-      function isFullscreen() {
-        return !!(document.fullscreenElement || document.webkitFullscreenElement);
-      }
-
-      function updateUI() {
-        var fs = isFullscreen();
-        iconEnter.hidden = fs;
-        iconExit.hidden = !fs;
-        label.textContent = fs ? 'Salir de pantalla completa' : 'Pantalla completa';
-        btn.setAttribute('aria-pressed', String(fs));
-      }
-
-      function enterFullscreen() {
-        var el = document.documentElement;
-        var req = el.requestFullscreen || el.webkitRequestFullscreen;
-        if (req) {
-          try { Promise.resolve(req.call(el)).catch(function () {}); } catch (e) {}
-        }
-      }
-
-      function exitFullscreen() {
-        var exit = document.exitFullscreen || document.webkitExitFullscreen;
-        if (exit) {
-          try { Promise.resolve(exit.call(document)).catch(function () {}); } catch (e) {}
-        }
-      }
-
-      btn.addEventListener('click', function () {
-        if (isFullscreen()) { exitFullscreen(); } else { enterFullscreen(); }
-      });
-
-      document.addEventListener('fullscreenchange', updateUI);
-      document.addEventListener('webkitfullscreenchange', updateUI);
-
-      /* Most browsers block automatic fullscreen without a click, so this is
-         best-effort; the button above is the reliable way in and out. */
-      window.addEventListener('load', function () {
-        enterFullscreen();
-        updateUI();
-      });
-
-      updateUI();
-    })();
-  </script>
 
 </body>
 
